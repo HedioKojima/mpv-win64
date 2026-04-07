@@ -43,7 +43,7 @@ jobs:
         file_glob: true
 
   ffmpeg-x86-64-v3:
-    needs: [lame-x86-64-v3, libvorbis_aotuv-x86-64-v3, opus-x86-64-v3, ffnvcodec-x86-64-v3, vapoursynth-x86-64-v3, vulkan-x86-64-v3, libjxl-x86-64-v3, libwebp-x86-64-v3]
+    needs: [ffnvcodec-x86-64-v3, vulkan-x86-64-v3, libjxl-x86-64-v3, libwebp-x86-64-v3]
     runs-on: windows-latest
     steps:
     - uses: actions/cache@v5
@@ -61,12 +61,7 @@ jobs:
         LIBRARY_PATH: /opt/lib
         MSYSTEM: UCRT64
       run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lame-dev-3.100-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libogg-dev-1.3.6-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libvorbis_aotuv-dev-1.3.7-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/opus-dev-1.6.1-1-x86_64.pkg.tar.zst
         curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vapoursynth-dev-73-1-x86_64.pkg.tar.zst
         curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
         curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/brotli-dev-1.2.0-1-x86_64.pkg.tar.zst
         curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/highway-dev-1.3.0-1-x86_64.pkg.tar.zst
@@ -275,42 +270,6 @@ jobs:
         overwrite: true
         file_glob: true
 
-  lame-x86-64-v3:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/lame-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: lame*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: lame-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
   lcms2-x86-64-v3:
     runs-on: windows-latest
     steps:
@@ -427,121 +386,6 @@ jobs:
         overwrite: true
         file_glob: true
 
-  libdvdcss-x86-64-v3:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/libdvdcss-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: libdvdcss*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: libdvdcss-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  libdvdnav-x86-64-v3:
-    needs: [libdvdread-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdcss-dev-1.5.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdread-dev-7.0.1-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/libdvdnav-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: libdvdnav*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: libdvdnav-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  libdvdread-x86-64-v3:
-    needs: [libdvdcss-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdcss-dev-1.5.0-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/libdvdread-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: libdvdread*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: libdvdread-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
   libjxl-x86-64-v3:
     needs: [brotli-x86-64-v3, highway-x86-64-v3, lcms2-x86-64-v3]
     runs-on: windows-latest
@@ -579,42 +423,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: libjxl-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  libogg-x86-64-v3:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/libogg-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: libogg*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: libogg-dev/*.zst
         tag: dev-x86-64-v3
         overwrite: true
         file_glob: true
@@ -657,45 +465,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: libplacebo-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  libvorbis_aotuv-x86-64-v3:
-    needs: [libogg-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libogg-dev-1.3.6-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/libvorbis_aotuv-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: libvorbis_aotuv*
-        fail-if-no-assets: false
-        fail-if-no-release: false
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: libvorbis_aotuv-dev/*.zst
         tag: dev-x86-64-v3
         overwrite: true
         file_glob: true
@@ -789,98 +558,7 @@ jobs:
         file_glob: true
 
   mpv-x86-64-v3:
-    needs: [ffmpeg-x86-64-v3, luajit-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, libbluray-x86-64-v3, libdvdnav-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include:/opt/include/vapoursynth
-        CPLUS_INCLUDE_PATH: /opt/include:/opt/include/vapoursynth
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/ffmpeg-git-dev-8.2pre-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/luajit-dev-2.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vapoursynth-dev-73-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/freetype2-dev-2.14.3-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/fribidi-dev-1.0.16-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/harfbuzz-dev-14.0.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libass-dev-0.17.4-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lcms2-dev-2.18-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libbluray-dev-1.4.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdcss-dev-1.5.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdread-dev-7.0.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdnav-dev-7.0.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/shaderc-dev-2026.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/spirv-cross-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/mpv; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg -p PKGBUILD-git'
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: mpv/*pkg*.xz
-        tag: bleeding_edge-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  mpv-stablelib-x86-64-v3:
-    needs: [luajit-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, libbluray-x86-64-v3, libdvdnav-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include:/opt/include/vapoursynth
-        CPLUS_INCLUDE_PATH: /opt/include:/opt/include/vapoursynth
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffmpeg-dev-8.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/luajit-dev-2.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vapoursynth-dev-73-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/freetype2-dev-2.14.3-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/fribidi-dev-1.0.16-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/harfbuzz-dev-14.0.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libass-dev-0.17.4-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lcms2-dev-2.18-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libbluray-dev-1.4.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdcss-dev-1.5.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdread-dev-7.0.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libdvdnav-dev-7.0.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/shaderc-dev-2026.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/spirv-cross-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/mpv; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg -p PKGBUILD-stablelib'
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: mpv/*pkg*.xz
-        tag: bleeding_edge-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  opus-x86-64-v3:
+    needs: [ffmpeg-x86-64-v3, luajit-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, libbluray-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
     runs-on: windows-latest
     steps:
     - uses: actions/cache@v5
@@ -898,56 +576,31 @@ jobs:
         LIBRARY_PATH: /opt/lib
         MSYSTEM: UCRT64
       run: |
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/opus-dev; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev-x86-64-v3
-        assets: opus*
-        fail-if-no-assets: false
-        fail-if-no-release: false
+        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/ffmpeg-git-dev-8.2pre-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/luajit-dev-2.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/freetype2-dev-2.14.3-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/fribidi-dev-1.0.16-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/harfbuzz-dev-14.0.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libass-dev-0.17.4-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lcms2-dev-2.18-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libbluray-dev-1.4.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/shaderc-dev-2026.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/spirv-cross-dev-1.4.341.0-1-x86_64.pkg.tar.zst
+        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
+        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/mpv; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg -p PKGBUILD-git'
     - name: Upload
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: opus-dev/*.zst
-        tag: dev-x86-64-v3
-        overwrite: true
-        file_glob: true
-
-  package-x86-64-v3:
-    needs: [mpv-x86-64-v3, python-embed-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - name: Package
-      run: |
-        $date = Get-Date -Format "yyyyMMdd"
-        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/ffmpeg-git-8.2pre-1-x86_64.pkg.tar.xz
-        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/luajit-2.1-1-x86_64.pkg.tar.xz
-        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/vapoursynth-73-1-x86_64.pkg.tar.xz
-        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/mpv-git-0.42pre-1-x86_64.pkg.tar.xz
-        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/mcfgthread-20260326-1-x86_64.pkg.tar.xz
-        C:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.xz --noconfirm"
-        md C:\msys64\opt\bin\portable_config
-        del *.xz
-        7z a All-in-One-MPV-git-withoutPython-${date}.7z C:\msys64\opt\bin\*
-        copy All-in-One-MPV-git-withoutPython-${date}.7z All-in-One-MPV-git-withoutPython-latest.7z
-        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/python-embed-3.14.3-1-x86_64.pkg.tar.xz
-        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/vapoursynth-plugin-core-extra-73-1-x86_64.pkg.tar.xz
-        C:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.xz --noconfirm"
-        7z a All-in-One-MPV-git-${date}.7z C:\msys64\opt\bin\*
-        copy All-in-One-MPV-git-${date}.7z All-in-One-MPV-git-latest.7z
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: All*.7z
+        file: mpv/*pkg*.xz
         tag: bleeding_edge-x86-64-v3
         overwrite: true
         file_glob: true
 
-  python-embed-x86-64-v3:
+  mpv-stablelib-x86-64-v3:
+    needs: [luajit-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, libbluray-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
     runs-on: windows-latest
     steps:
     - uses: actions/cache@v5
@@ -959,22 +612,60 @@ jobs:
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
     - name: Build
+      env:
+        C_INCLUDE_PATH: /opt/include
+        CPLUS_INCLUDE_PATH: /opt/include
+        LIBRARY_PATH: /opt/lib
+        MSYSTEM: UCRT64
       run: |
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/python-embed; makepkg'
-    - name: Delete
-      uses: mknejp/delete-release-assets@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: latest-x86-64-v3
-        assets: python-embed*
-        fail-if-no-assets: false
-        fail-if-no-release: false
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffmpeg-dev-8.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/luajit-dev-2.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/freetype2-dev-2.14.3-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/fribidi-dev-1.0.16-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/harfbuzz-dev-14.0.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libass-dev-0.17.4-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lcms2-dev-2.18-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libbluray-dev-1.4.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/shaderc-dev-2026.1-1-x86_64.pkg.tar.zst
+        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/spirv-cross-dev-1.4.341.0-1-x86_64.pkg.tar.zst
+        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
+        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/mpv; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg -p PKGBUILD-stablelib'
     - name: Upload
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: python-embed/*pkg*.xz
-        tag: latest-x86-64-v3
+        file: mpv/*pkg*.xz
+        tag: bleeding_edge-x86-64-v3
+        overwrite: true
+        file_glob: true
+
+  package-x86-64-v3:
+    needs: [mpv-x86-64-v3]
+    runs-on: windows-latest
+    steps:
+    - name: Package
+      run: |
+        $date = Get-Date -Format "yyyyMMdd"
+        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/ffmpeg-git-8.2pre-1-x86_64.pkg.tar.xz
+        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/luajit-2.1-1-x86_64.pkg.tar.xz
+        curl -OL https://github.com/${{ github.repository }}/releases/download/bleeding_edge-x86-64-v3/mpv-git-0.42pre-1-x86_64.pkg.tar.xz
+        curl -OL https://github.com/${{ github.repository }}/releases/download/latest-x86-64-v3/mcfgthread-20260326-1-x86_64.pkg.tar.xz
+        C:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.xz --noconfirm"
+        md C:\msys64\opt\bin\portable_config
+        del *.xz
+        7z a All-in-One-MPV-git-withoutPython-${date}.7z C:\msys64\opt\bin\*
+        copy All-in-One-MPV-git-withoutPython-${date}.7z All-in-One-MPV-git-withoutPython-latest.7z
+        C:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.xz --noconfirm"
+        7z a All-in-One-MPV-git-${date}.7z C:\msys64\opt\bin\*
+        copy All-in-One-MPV-git-${date}.7z All-in-One-MPV-git-latest.7z
+    - name: Upload
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: All*.7z
+        tag: bleeding_edge-x86-64-v3
         overwrite: true
         file_glob: true
 
