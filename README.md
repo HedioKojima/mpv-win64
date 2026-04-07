@@ -21,7 +21,7 @@ All your configurations can be saved within the ***portable_config*** subdirecto
 ### Lua Plugin
 - [uosc](https://github.com/tomasklaen/uosc)
 ### Shader
-- (https://github.com/hooke007/mpv_PlayKit/tree/main/portable_config/shaders)
+- https://github.com/hooke007/mpv_PlayKit/tree/main/portable_config/shaders
 ## How to Compile
 Fork this repo and build these packages by Github Action  
 **NOTICE**  
