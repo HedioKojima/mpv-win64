@@ -30,7 +30,7 @@ jobs:
         xcopy /e C:\msys64 D:\msys64\
         xcopy /e /y D:\ucrt64 D:\msys64\ucrt64
         D:\msys64\usr\bin\bash -lc 'cd /d/a/mpv-win64/mpv-win64/mcfgthread; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg'
-    - name: Delete V3
+    - name: Delete Zen3
       if: steps.cache.outputs.cache-hit != 'true'
       uses: mknejp/delete-release-assets@v1
       with:
@@ -39,7 +39,7 @@ jobs:
         assets: mcfgthread*
         fail-if-no-assets: false
         fail-if-no-release: false
-    - name: Upload V3
+    - name: Upload Zen3
       if: steps.cache.outputs.cache-hit != 'true'
       uses: svenstaro/upload-release-action@v2
       with:
