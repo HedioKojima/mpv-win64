@@ -60,11 +60,6 @@ for p in pkgs_git:
       if l.startswith('pkgver'):
         l = 'pkgver=%s\n' % pkgs_git[p]
       f.write(l)
-with in_place.InPlace('mpv/PKGBUILD-stablelib', newline='') as f:
-  for l in f:
-    if l.startswith('pkgver'):
-      l = 'pkgver=%s\n' % pkgs_git['mpv']
-    f.write(l)
 with in_place.InPlace('.github/workflows/batch-bleeding_edge-weekly.yml', newline='') as f:
   for l in f:
     if (i:=l.find('/bleeding_edge')) > -1:
