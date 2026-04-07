@@ -15,14 +15,11 @@ with in_place.InPlace('.github/workflows/toolchain.yml', newline='') as f:
     f.write(l)
 pkgs = {}
 pkgs['mcfgthread'] = mingw[:8]
-# pkgs['libvorbis_aotuv-dev'] = x['libvorbis']
-pkgs['python-embed'] = x['Python']
-pkgs['vapoursynth'] = x['VapourSynth'][1:]
 pkgs['ffmpeg'] = x['ffmpeg']
 pkgs['mpv'] = x['mpv']
-for p in ['brotli', 'ffnvcodec', 'freetype2', 'fribidi', 'harfbuzz', 'highway', 'lame', 'lcms2', 'libass',
-          'libbluray', 'libdvdcss', 'libdvdread', 'libdvdnav', 'libogg', 'libjxl', 'libplacebo',
-          'libwebp', 'opus', 'shaderc', 'spirv-cross']:
+for p in ['brotli', 'ffnvcodec', 'freetype2', 'fribidi', 'harfbuzz', 'highway', 'libass',
+          'libbluray', 'libjxl', 'libplacebo',
+          'libwebp', 'shaderc', 'spirv-cross']:
   pkgs['%s-dev' % p] = x[p]
 pkgs['vulkan-dev'] = x['spirv-cross']
 for p in pkgs:
@@ -31,8 +28,6 @@ for p in pkgs:
       if l.startswith('pkgver'):
         l = 'pkgver=%s\n' % pkgs[p]
       f.write(l)
-pkgs['vapoursynth-dev'] = pkgs['vapoursynth']
-pkgs['vapoursynth-plugin-core-extra'] = pkgs['vapoursynth']
 pkgs['ffmpeg-dev'] = pkgs['ffmpeg']
 for t in ['batch-stable.yml', 'batch-bleeding_edge-weekly.yml', 'ci.yml']:
   with in_place.InPlace('.github/workflows/%s' % t, newline='') as f:
