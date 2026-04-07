@@ -29,7 +29,7 @@ for p in pkgs:
         l = 'pkgver=%s\n' % pkgs[p]
       f.write(l)
 pkgs['ffmpeg-dev'] = pkgs['ffmpeg']
-for t in ['batch-stable.yml', 'batch-bleeding_edge-weekly.yml', 'ci.yml']:
+for t in ['batch-bleeding_edge-weekly.yml', 'ci.yml']:
   with in_place.InPlace('.github/workflows/%s' % t, newline='') as f:
     for l in f:
       if (i:=l.find('key: mcf_')) > -1:
