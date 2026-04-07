@@ -599,48 +599,6 @@ jobs:
         overwrite: true
         file_glob: true
 
-  mpv-stablelib-x86-64-v3:
-    needs: [luajit-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, libbluray-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
-    runs-on: windows-latest
-    steps:
-    - uses: actions/cache@v5
-      id: cache
-      with:
-        path: D:\msys64
-        key: mcf_20260326_16.0.1_x64-ucrt
-    - name: Prepare
-      run: git config --global core.autocrlf false
-    - uses: actions/checkout@v6
-    - name: Build
-      env:
-        C_INCLUDE_PATH: /opt/include
-        CPLUS_INCLUDE_PATH: /opt/include
-        LIBRARY_PATH: /opt/lib
-        MSYSTEM: UCRT64
-      run: |
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffmpeg-dev-8.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/luajit-dev-2.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/ffnvcodec-dev-13.0.19.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/freetype2-dev-2.14.3-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/fribidi-dev-1.0.16-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/harfbuzz-dev-14.1.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libass-dev-0.17.4-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/lcms2-dev-2.18-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/libbluray-dev-1.4.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/vulkan-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/shaderc-dev-2026.1-1-x86_64.pkg.tar.zst
-        curl -OL https://github.com/${{ github.repository }}/releases/download/dev-x86-64-v3/spirv-cross-dev-1.4.341.0-1-x86_64.pkg.tar.zst
-        D:\msys64\usr\bin\bash -lc "pacman -U /d/a/mpv-win64/mpv-win64/*.zst --noconfirm"
-        D:\msys64\usr\bin\bash -lc 'cp /d/a/mpv-win64/mpv-win64/x86-64-v3.conf /etc/makepkg.conf; cd /d/a/mpv-win64/mpv-win64/mpv; PATH=/usr/bin:/opt/bin:/ucrt64/bin PKG_CONFIG_PATH=/opt/lib/pkgconfig makepkg -p PKGBUILD-stablelib'
-    - name: Upload
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: mpv/*pkg*.xz
-        tag: bleeding_edge-x86-64-v3
-        overwrite: true
-        file_glob: true
-
   package-x86-64-v3:
     needs: [mpv-x86-64-v3]
     runs-on: windows-latest
