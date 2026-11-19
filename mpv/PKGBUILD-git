@@ -25,7 +25,9 @@ build() {
   cd $srcdir/mpv
   sed -i 's/ .. exesuf//g'  player/lua/ytdl_hook.lua
   export LDFLAGS="$LDFLAGS -static -lstdc++ -lssp"
-  meson setup build --buildtype=release -Dprefix=/opt -Ddvdnav=disabled -Dvapoursynth=disabled
+  meson setup build --buildtype=release -Dprefix=/opt -Ddvdnav=disabled -Dvapoursynth=disabled \
+    -Dlibmpv=false -Dpdf-build=disabled -Dlua=luajit -Dgl=disabled -Ddirect3d=disabled \
+    -Dwin32-subsystem=console -Dwin32-threads=enabled
   meson compile -C build
 }
 

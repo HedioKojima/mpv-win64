@@ -12,6 +12,9 @@ md5sums=('SKIP')
 
 build() {
   CARGS="--target-os=mingw32 --arch=x86_64 --disable-debug --disable-doc \
+         --disable-nvenc --disable-programs --disable-avdevice --disable-demuxer=matroska \
+         --disable-devices --disable-encoders --enable-encoder=png --enable-encoder=mjpeg \
+         --disable-decoder=aac_fixed,ac3_fixed,mp1,mp2,mp3,mp3adu,mp3on4 \
          --enable-gpl --enable-version3 --enable-nonfree --enable-zlib --pkg-config-flags=--static \
          --disable-ffplay --disable-ffprobe --enable-shared \
          --disable-pthreads --enable-w32threads"
