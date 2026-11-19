@@ -1,14 +1,12 @@
 # MPV Player Win64 Build
 
 ## Installation
-Grab and extract the All-in-One archive from <https://github.com/nyfair/mpv-win64/releases>  
-**Bleeding Edge** weekly build is based on the git trunk code of mpv and libplacebo. It includes the newest features and bug fixes but may be less stable  
-**Latest** build is based on the stable releases of all libraries  
-**x86-64-v3** build is optimized for CPUs that support the AVX2 instruction set, this includes most CPUs after 2013  
-**x86-64-v4** build is optimized for CPUs that support the AVX512 instruction set, it is recommends for Intel CPUs after 2016  
-**amd-zen4+** build is specifically optimized for AMD Zen4(7000 series) and newer CPUs  
+Grab and extract the All-in-One archive from <https://github.com/HedioKojima/mpv-win64/releases>  
+**Bleeding Edge** weekly build is based on the git trunk code of mpv, FFmpeg and libplacebo. It includes the newest features and bug fixes but may be less stable  
+Only the **x86-64-v3** build is produced; it is optimized for CPUs that support the AVX2 instruction set, this includes most CPUs after 2013  
+All libraries except the MSYS2 toolchain are compiled from their upstream git repositories  
 You can also manually install these pacman-based packages if you are using MSYS2  
-All my builds are portable and compiled with VapourSynth support, these plugins will have no effect if MPV can't find python environment
+All my builds are portable
 
 ## Main project site:
 <https://mpv.io/>
@@ -24,10 +22,6 @@ All your configurations can be saved within the ***portable_config*** subdirecto
 ### Lua Plugin
 - [uosc](https://github.com/tomasklaen/uosc)
 - [thumbfast](https://github.com/po5/thumbfast)
-### VapourSynth Plugin
-- [MVTools](https://github.com/dubhater/vapoursynth-mvtools) motion interpolation plugin and it was open source
-- [FFMS2](https://github.com/FFMS/ffms2) video source library for multimedia editing
-- [RIFE](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-RIFE-ncnn-Vulkan) new motion interpolation based on rife-ncnn-vulkan
 ### Shader
 - [Anime4K](https://bloc97.github.io/Anime4K/)
 - [SSim/Krig](https://gist.github.com/igv)
@@ -36,23 +30,18 @@ All your configurations can be saved within the ***portable_config*** subdirecto
 
 ## How to Compile
 Fork this repo and build these packages by Github Action  
+Run the `toolchain` workflow first: it prepares the MSYS2/mingw-w64 cache and publishes the `mcfgthread` package to the `bleeding_edge-x86-64-v3` release  
+Then run the `batch-bleeding_edge-weekly` workflow (it also runs weekly on schedule)  
 **NOTICE**  
 Don't build it on your personal msys2 environment unless it was in sandbox, these shitty scripts will spoil your whole weekend!
 
 ## Detail
 The FFmpeg and MPV library were built with the following libraries
-- lame: MP3 Audio Encoding
-- libogg/libvorbis-aotuv: Ogg Vorbis Audio Encoding
-- opus: Opus Audio Encoding
-- nvcodec: Nvidia Hardware Accelerated video Encoding/Decoding
+- ffnvcodec: Nvidia Hardware Accelerated video Encoding/Decoding
 - lcms2: Reading ICC Profiles for Your Monitor
 - libass/freetype2/fribidi/harfbuzz: Subtitle Support
 - luajit: Lua Plugin
-- vapoursynth: VapourSynth Plugin and VSS Video Source
-- shaderc/spirv/libplacebo: D3D11 & Vulkan Context
-- libbluray/libdvdnav/libdvdread/libdvdcss: Parsing BD/DVD
-- libwebp: WebP Image Encoding/Decoding
-- libjxl/highway/brotli: JPEG XL Image Encoding/Decoding
+- shaderc/spirv-cross/vulkan/libplacebo: D3D11 & Vulkan Context
 
 ## TODO ???
 ### Build FFmpeg with x264/x265/rav1e/SVT-AV1/VVenC for video encoding

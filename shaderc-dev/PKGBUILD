@@ -6,12 +6,12 @@ pkgdesc='Collection of tools, libraries and tests for shader compilation'
 arch=('x86_64')
 url="https://github.com/google/shaderc/"
 license=('Apache')
-source=("https://github.com/google/shaderc/archive/v$pkgver.tar.gz")
+source=("git+https://github.com/google/shaderc")
 md5sums=('SKIP')
 
 build() {
   cd $srcdir
-  cp shaderc-$pkgver/DEPS ./
+  cp shaderc/DEPS ./
   curl -OL https://github.com/KhronosGroup/glslang/archive/`cat DEPS | grep glslang | head -n1 | cut -d\' -f4`.tar.gz
   curl -OL https://github.com/KhronosGroup/SPIRV-Headers/archive/`cat DEPS | grep spirv_headers | head -n1 | cut -d\' -f4`.tar.gz
   curl -OL https://github.com/KhronosGroup/SPIRV-Tools/archive/`cat DEPS | grep spirv_tools | head -n1 | cut -d\' -f4`.tar.gz
@@ -21,7 +21,7 @@ build() {
   mv SPIRV-Tools* spirv-tools
   sed -i '/namespace/i #include <cstdint>' glslang/glslang/MachineIndependent/SymbolTable.h
   sed -i 's/-fno-exceptions/-fexceptions/g' glslang/CMakeLists.txt
-  cd shaderc-$pkgver
+  cd shaderc
   sed -i '/(build-version/,+4d' CMakeLists.txt
   sed -i '/glslc/d' CMakeLists.txt
   rm -rf build && mkdir build && cd build
@@ -31,10 +31,12 @@ build() {
 }
 
 package() {
-  cd $srcdir/shaderc-$pkgver
+  cd "$srcdir/shaderc"
   mkdir -p $pkgdir/opt/lib/pkgconfig
   cp -r libshaderc/include $pkgdir/opt
   cp -r libshaderc_util/include/libshaderc_util $pkgdir/opt/include
   cp build/libshaderc/libshaderc_combined.a $pkgdir/opt/lib
   cp build/shaderc_combined.pc $pkgdir/opt/lib/pkgconfig
+  # libplacebo/mpv look up pkg-config name "shaderc"; expose the combined build under that name
+  cp build/shaderc_combined.pc $pkgdir/opt/lib/pkgconfig/shaderc.pc
 }

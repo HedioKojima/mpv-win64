@@ -7,16 +7,22 @@ arch=('x86_64')
 url="https://github.com/libass/libass/"
 makedepends=('freetype2-dev' 'fribidi-dev' 'harfbuzz-dev')
 license=('BSD')
-source=("https://github.com/libass/libass/releases/download/$pkgver/libass-$pkgver.tar.xz")
+source=("git+https://github.com/libass/libass")
 md5sums=('SKIP')
 
 build() {
-  cd $srcdir/libass-$pkgver
-  ./configure prefix=/opt --disable-shared
-  make
+  cd "$srcdir/libass"
+  mkdir work
+  meson . work --prefix=/opt --buildtype=release --default-library=static \
+    -Dfontconfig=disabled -Ddirectwrite=disabled -Drequire-system-font-provider=false \
+    -Dtest=disabled -Dcompare=disabled -Dprofile=disabled -Dfuzz=disabled -Dcheckasm=disabled
+  cd work
+  ninja
 }
 
 package() {
-  cd $srcdir/libass-$pkgver
-  make DESTDIR=$pkgdir install
+  cd "$srcdir/libass/work"
+  DESTDIR=$pkgdir ninja install
+  mv $pkgdir/msys64/* $pkgdir
+  rm -rf $pkgdir/msys64
 }
