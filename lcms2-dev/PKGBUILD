@@ -11,13 +11,19 @@ md5sums=('SKIP')
 
 build() {
   cd "$srcdir/Little-CMS"
-  export CFLAGS="-masm=att ${CFLAGS}"
-  ./configure prefix=/opt --disable-shared --without-zlib
-  make
+  mkdir work
+  meson . work --prefix=/opt --buildtype=release --default-library=static \
+    -Dtests=disabled -Djpeg=disabled -Dtiff=disabled -Dutils=false
+  cd work
+  ninja
 }
 
 package() {
-  cd "$srcdir/Little-CMS"
-  make DESTDIR=$pkgdir install
-  rm -rf $pkgdir/opt/share $pkgdir/opt/bin
+  cd "$srcdir/Little-CMS/work"
+  DESTDIR=$pkgdir ninja install
+  if [ -d "$pkgdir/msys64" ]; then
+    mv "$pkgdir"/msys64/* "$pkgdir"/
+    rm -rf "$pkgdir/msys64"
+  fi
+  rm -rf "$pkgdir/opt/share" "$pkgdir/opt/bin"
 }
