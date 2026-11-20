@@ -41,7 +41,8 @@ The FFmpeg and MPV library were built with the following libraries
 - lcms2: Reading ICC Profiles for Your Monitor
 - libass/freetype2/fribidi/harfbuzz: Subtitle Support
 - luajit: Lua Plugin
-- shaderc/spirv-cross/vulkan/libplacebo: D3D11 & Vulkan Context
+- shaderc/spirv-cross/vulkan: D3D11 & Vulkan Context
+- libplacebo: cloned and built from upstream git inside the mpv job
 
 ## TODO ???
 ### Build FFmpeg with x264/x265/rav1e/SVT-AV1/VVenC for video encoding
