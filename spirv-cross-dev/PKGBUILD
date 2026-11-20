@@ -11,10 +11,14 @@ md5sums=('SKIP')
 
 build() {
   cd "$srcdir/SPIRV-Cross"
+  # mpv's Meson looks for pkg-config name spirv-cross-c-shared (D3D11).
+  # Build that target as a single static archive so mpv can link it without a runtime DLL.
+  sed -i 's/ SHARED/ STATIC/' CMakeLists.txt
+  sed -i '/SPVC_EXPORT_SYMBOLS/d' CMakeLists.txt
   rm -rf build && mkdir build && cd build
   export CXXFLAGS="${CXXFLAGS} -D__USE_MINGW_ANSI_STDIO"
   cmake .. -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=/opt -DCMAKE_BUILD_TYPE=Release \
-    -DSPIRV_CROSS_SHARED=OFF -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    -DSPIRV_CROSS_SHARED=ON -DSPIRV_CROSS_STATIC=ON -DSPIRV_CROSS_CLI=OFF -DSPIRV_CROSS_ENABLE_TESTS=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5
   cmake --build .
 }
 
