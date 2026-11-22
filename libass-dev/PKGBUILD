@@ -14,7 +14,7 @@ build() {
   cd "$srcdir/libass"
   mkdir work
   meson . work --prefix=/opt --buildtype=release --default-library=static \
-    -Dfontconfig=disabled -Ddirectwrite=disabled -Drequire-system-font-provider=false \
+    -Dfontconfig=disabled -Ddirectwrite=enabled -Dasm=enabled \
     -Dtest=disabled -Dcompare=disabled -Dprofile=disabled -Dfuzz=disabled -Dcheckasm=disabled
   cd work
   ninja
