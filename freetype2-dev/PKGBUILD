@@ -14,7 +14,7 @@ build() {
   mkdir work
   meson . work --prefix=/opt --buildtype=release --default-library=static \
     -Dharfbuzz=disabled -Dbrotli=disabled -Dbzip2=disabled -Dpng=disabled \
-    -Dzlib=internal -Dtests=disabled
+    -Dzlib=disabled -Dtests=disabled
   cd work
   ninja
 }
