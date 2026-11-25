@@ -30,7 +30,7 @@ All your configurations can be saved within the ***portable_config*** subdirecto
 
 ## How to Compile
 Fork this repo and build these packages by Github Action  
-Run the `toolchain` workflow first: it prepares the MSYS2/mingw-w64 cache and publishes the `mcfgthread` package to the `bleeding_edge-x86-64-v3` release  
+Run the `toolchain` workflow first: it resolves the newest dated x64-ucrt GCC-MCF archive from gcc-mcf.lhmouse.com, prepares the MSYS2/mingw-w64 cache and publishes the `mcfgthread` package to the `bleeding_edge-x86-64-v3` release  
 Then run the `batch-bleeding_edge-weekly` workflow (it also runs weekly on schedule)  
 **NOTICE**  
 Don't build it on your personal msys2 environment unless it was in sandbox, these shitty scripts will spoil your whole weekend!

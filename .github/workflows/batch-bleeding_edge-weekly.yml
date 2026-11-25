@@ -11,11 +11,11 @@ jobs:
     needs: [ffnvcodec-x86-64-v3, vulkan-x86-64-v3, lcms2-x86-64-v3]
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -51,11 +51,11 @@ jobs:
   ffnvcodec-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -87,11 +87,11 @@ jobs:
   freetype2-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -123,11 +123,11 @@ jobs:
   fribidi-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -160,11 +160,11 @@ jobs:
     needs: [freetype2-x86-64-v3]
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -198,11 +198,11 @@ jobs:
   lcms2-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -235,11 +235,11 @@ jobs:
     needs: [freetype2-x86-64-v3, fribidi-x86-64-v3, harfbuzz-x86-64-v3]
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -275,11 +275,11 @@ jobs:
   luajit-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -328,11 +328,11 @@ jobs:
     needs: [ffmpeg-x86-64-v3, ffnvcodec-x86-64-v3, freetype2-x86-64-v3, fribidi-x86-64-v3, harfbuzz-x86-64-v3, libass-x86-64-v3, lcms2-x86-64-v3, luajit-x86-64-v3, shaderc-x86-64-v3, spirv-cross-x86-64-v3, vulkan-x86-64-v3]
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -393,11 +393,11 @@ jobs:
   shaderc-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -429,11 +429,11 @@ jobs:
   spirv-cross-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
@@ -465,11 +465,11 @@ jobs:
   vulkan-x86-64-v3:
     runs-on: windows-latest
     steps:
-    - uses: actions/cache@v5
-      id: cache
+    - uses: actions/cache/restore@v5
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: mcf_current
+        restore-keys: mcf_
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6

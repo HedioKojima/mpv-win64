@@ -5,20 +5,43 @@ on:
   schedule:
   - cron: '25 0 * * 4'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
+    - name: Resolve latest GCC-MCF
+      id: resolve
+      shell: bash
+      run: |
+        html=$(curl -k --ssl-no-revoke -sSL --resolve "gcc-mcf.lhmouse.com:443:204.152.213.15" https://gcc-mcf.lhmouse.com/)
+        best=$(printf '%s\n' "$html" | grep -oE 'mingw-w64-gcc-mcf_[0-9]{8}_[0-9]+\.[0-9]+\.[0-9]+_x64-ucrt_[0-9a-f]{40}\.7z' | sort -r | head -n1)
+        if [ -z "$best" ]; then
+          echo "No GCC-MCF x64-ucrt archive found" >&2
+          exit 1
+        fi
+        date=$(printf '%s\n' "$best" | sed -E 's/^mingw-w64-gcc-mcf_([0-9]{8})_.*/\1/')
+        version=$(printf '%s\n' "$best" | sed -E 's/^mingw-w64-gcc-mcf_[0-9]{8}_([0-9]+\.[0-9]+\.[0-9]+)_x64-ucrt_.*/\1/')
+        hash=$(printf '%s\n' "$best" | sed -E 's/.*_x64-ucrt_([0-9a-f]{40})\.7z/\1/')
+        {
+          echo "file=$best"
+          echo "date=$date"
+          echo "version=$version"
+          echo "cache_key=mcf_${date}_${version}_${hash:0:8}_x64-ucrt"
+        } >> "$GITHUB_OUTPUT"
     - uses: actions/cache@v5
       id: cache
       with:
         path: D:\msys64
-        key: mcf_20261109_16.2.1_x64-ucrt
+        key: ${{ steps.resolve.outputs.cache_key }}
     - name: Setup Toolchain
       if: steps.cache.outputs.cache-hit != 'true'
+      shell: pwsh
       run: |
-        curl -k --ssl-no-revoke -OL https://gcc-mcf.lhmouse.com/mingw-w64-gcc-mcf_20261109_16.2.1_x64-ucrt_3d66d1aa09e7a00e4b45b40863808377c2cacadc.7z --resolve "gcc-mcf.lhmouse.com:443:204.152.213.15"
-        &'C:\Program Files\7-Zip\7z.exe' x *.7z -o'D:'
+        curl.exe -k --ssl-no-revoke -o "${{ steps.resolve.outputs.file }}" "https://gcc-mcf.lhmouse.com/${{ steps.resolve.outputs.file }}" --resolve "gcc-mcf.lhmouse.com:443:204.152.213.15"
+        &'C:\Program Files\7-Zip\7z.exe' x "${{ steps.resolve.outputs.file }}" -o'D:'
     - name: Prepare
       run: git config --global core.autocrlf false
     - uses: actions/checkout@v6
